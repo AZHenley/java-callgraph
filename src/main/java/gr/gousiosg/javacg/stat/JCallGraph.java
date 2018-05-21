@@ -31,6 +31,8 @@ package gr.gousiosg.javacg.stat;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -45,6 +47,13 @@ import org.apache.bcel.classfile.ClassParser;
  */
 public class JCallGraph {
 
+	public static Map<String, CallGraphNode> map = new HashMap<String, CallGraphNode>();
+	
+	public static void addNode(String fullMethodName, CallGraphNode node) {
+		// Expects full class path + method name
+		
+	}
+	
     public static void main(String[] args) {
         ClassParser cp;
         try {
@@ -71,6 +80,8 @@ public class JCallGraph {
                     ClassVisitor visitor = new ClassVisitor(cp.parse());
                     visitor.start();
                 }
+                
+                jar.close();
             }
         } catch (IOException e) {
             System.err.println("Error while processing jar: " + e.getMessage());
