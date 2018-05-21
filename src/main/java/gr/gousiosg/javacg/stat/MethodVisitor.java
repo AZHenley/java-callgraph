@@ -43,6 +43,11 @@ public class MethodVisitor extends EmptyVisitor {
     private MethodGen mg;
     private ConstantPoolGen cp;
     private String format;
+    
+    private String fileName;
+    private String className;
+    private String methodName;
+    private String lineNumber;
 
     public MethodVisitor(MethodGen m, JavaClass jc) {
         visitedClass = jc;
@@ -50,6 +55,10 @@ public class MethodVisitor extends EmptyVisitor {
         cp = mg.getConstantPool();
         format = visitedClass.getSourceFileName() + "!!!" + visitedClass.getClassName() + "!!!" + mg.getName() + 
                 "!!!" + mg.getLineNumbers()[0].getLineNumber().getLineNumber() + "!!!" + "%s!!!%s!!!%s";
+        fileName = visitedClass.getSourceFileName();
+        className = visitedClass.getClassName();
+        methodName = mg.getName();
+        lineNumber = Integer.toString(mg.getLineNumbers()[0].getLineNumber().getLineNumber()); 
     }
 
 //    private String argumentList(Type[] arguments) {
@@ -82,28 +91,58 @@ public class MethodVisitor extends EmptyVisitor {
                 && !(i instanceof ReturnInstruction));
     }
 
+    public CallGraphNode processMethod(String fN, String fCN, String mN, String lN) {
+    	System.out.println(JCallGraph.allNodes.size());
+    	return JCallGraph.addNode(fCN + "!!!" + mN, new CallGraphNode(fN, fCN, mN, lN));
+    }
+    
     @Override
     public void visitINVOKEVIRTUAL(INVOKEVIRTUAL i) {
         System.out.println(String.format(format,"M",i.getClassName(cp),i.getMethodName(cp)));
+        CallGraphNode node = processMethod(fileName, className, methodName, lineNumber);
+        node.AddMethodCalledFromThis(i.getClassName(cp), i.getMethodName(cp));
+        CallGraphNode otherNode = JCallGraph.allNodes.get(i.getClassName(cp) + "!!!" + i.getMethodName(cp));
+        if(otherNode != null)
+        	otherNode.AddMethodThatCallsThis(className, methodName);
     }
 
     @Override
     public void visitINVOKEINTERFACE(INVOKEINTERFACE i) {
         System.out.println(String.format(format,"I",i.getClassName(cp),i.getMethodName(cp)));
+        CallGraphNode node = processMethod(fileName, className, methodName, lineNumber);
+        node.AddMethodCalledFromThis(i.getClassName(cp), i.getMethodName(cp));
+        CallGraphNode otherNode = JCallGraph.allNodes.get(i.getClassName(cp) + "!!!" + i.getMethodName(cp));
+        if(otherNode != null)
+        	otherNode.AddMethodThatCallsThis(className, methodName);
     }
 
     @Override
     public void visitINVOKESPECIAL(INVOKESPECIAL i) {
         System.out.println(String.format(format,"O",i.getClassName(cp),i.getMethodName(cp)));
+        CallGraphNode node = processMethod(fileName, className, methodName, lineNumber);
+        node.AddMethodCalledFromThis(i.getClassName(cp), i.getMethodName(cp));
+        CallGraphNode otherNode = JCallGraph.allNodes.get(i.getClassName(cp) + "!!!" + i.getMethodName(cp));
+        if(otherNode != null)
+        	otherNode.AddMethodThatCallsThis(className, methodName);
     }
 
     @Override
     public void visitINVOKESTATIC(INVOKESTATIC i) {
         System.out.println(String.format(format,"S",i.getClassName(cp),i.getMethodName(cp)));
+        CallGraphNode node = processMethod(fileName, className, methodName, lineNumber);
+        node.AddMethodCalledFromThis(i.getClassName(cp), i.getMethodName(cp));
+        CallGraphNode otherNode = JCallGraph.allNodes.get(i.getClassName(cp) + "!!!" + i.getMethodName(cp));
+        if(otherNode != null)
+        	otherNode.AddMethodThatCallsThis(className, methodName);
     }
 
     @Override
     public void visitINVOKEDYNAMIC(INVOKEDYNAMIC i) {
         System.out.println(String.format(format,"D",i.getClassName(cp),i.getMethodName(cp)));
+        CallGraphNode node = processMethod(fileName, className, methodName, lineNumber);
+        node.AddMethodCalledFromThis(i.getClassName(cp), i.getMethodName(cp));
+        CallGraphNode otherNode = JCallGraph.allNodes.get(i.getClassName(cp) + "!!!" + i.getMethodName(cp));
+        if(otherNode != null)
+        	otherNode.AddMethodThatCallsThis(className, methodName);
     }
 }

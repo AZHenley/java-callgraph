@@ -47,12 +47,19 @@ import org.apache.bcel.classfile.ClassParser;
  */
 public class JCallGraph {
 
-	public static Map<String, CallGraphNode> map = new HashMap<String, CallGraphNode>();
+	public static Map<String, CallGraphNode> allNodes = new HashMap<String, CallGraphNode>();
 	
-	public static void addNode(String fullMethodName, CallGraphNode node) {
+	public static CallGraphNode addNode(String fullClassMethodName, CallGraphNode node) {
 		// Expects full class path + method name
 		
+		CallGraphNode existing = allNodes.get(fullClassMethodName);
+		if(existing == null) { // Doesn't already exist
+			allNodes.put(fullClassMethodName, node);
+		}
+		
+		return allNodes.get(fullClassMethodName);
 	}
+	
 	
     public static void main(String[] args) {
         ClassParser cp;
@@ -80,6 +87,14 @@ public class JCallGraph {
                     ClassVisitor visitor = new ClassVisitor(cp.parse());
                     visitor.start();
                 }
+                
+                
+                // Testing.
+                //CallGraphNode testNode = allNodes.get("gr.gousiosg.javacg.stat.MethodVisitor!!!start");
+                //System.out.println("AZH " + testNode);//+ testNode.methodsCalledFromThis.size() + " "); //+ testNode.methodsThatCallThis.size());
+                allNodes.forEach((key, value) -> System.out.println(key + " : " + value));
+                
+                
                 
                 jar.close();
             }
