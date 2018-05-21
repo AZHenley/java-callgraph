@@ -48,20 +48,20 @@ public class MethodVisitor extends EmptyVisitor {
         visitedClass = jc;
         mg = m;
         cp = mg.getConstantPool();
-        format = "M:" + visitedClass.getSourceFileName() + " ! " + visitedClass.getClassName() + ":" + mg.getName() + "(" + argumentList(mg.getArgumentTypes()) + ") "
-                + mg.getLineNumbers()[0].getLineNumber().getLineNumber() + " " + "(%s)%s:%s(%s)";
+        format = visitedClass.getSourceFileName() + "!!!" + visitedClass.getClassName() + "!!!" + mg.getName() + 
+                "!!!" + mg.getLineNumbers()[0].getLineNumber().getLineNumber() + "!!!" + "%s!!!%s!!!%s";
     }
 
-    private String argumentList(Type[] arguments) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < arguments.length; i++) {
-            if (i != 0) {
-                sb.append(",");
-            }
-            sb.append(arguments[i].toString());
-        }
-        return sb.toString();
-    }
+//    private String argumentList(Type[] arguments) {
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < arguments.length; i++) {
+//            if (i != 0) {
+//                sb.append(",");
+//            }
+//            sb.append(arguments[i].toString());
+//        }
+//        return sb.toString();
+//    }
 
     public void start() {
         if (mg.isAbstract() || mg.isNative())
@@ -84,27 +84,26 @@ public class MethodVisitor extends EmptyVisitor {
 
     @Override
     public void visitINVOKEVIRTUAL(INVOKEVIRTUAL i) {
-        System.out.println(String.format(format,"M",i.getReferenceType(cp),i.getMethodName(cp),argumentList(i.getArgumentTypes(cp))));
+        System.out.println(String.format(format,"M",i.getClassName(cp),i.getMethodName(cp)));
     }
 
     @Override
     public void visitINVOKEINTERFACE(INVOKEINTERFACE i) {
-        System.out.println(String.format(format,"I",i.getReferenceType(cp),i.getMethodName(cp),argumentList(i.getArgumentTypes(cp))));
+        System.out.println(String.format(format,"I",i.getClassName(cp),i.getMethodName(cp)));
     }
 
     @Override
     public void visitINVOKESPECIAL(INVOKESPECIAL i) {
-        System.out.println(String.format(format,"O",i.getReferenceType(cp),i.getMethodName(cp),argumentList(i.getArgumentTypes(cp))));
+        System.out.println(String.format(format,"O",i.getClassName(cp),i.getMethodName(cp)));
     }
 
     @Override
     public void visitINVOKESTATIC(INVOKESTATIC i) {
-        System.out.println(String.format(format,"S",i.getReferenceType(cp),i.getMethodName(cp),argumentList(i.getArgumentTypes(cp))));
+        System.out.println(String.format(format,"S",i.getClassName(cp),i.getMethodName(cp)));
     }
 
     @Override
     public void visitINVOKEDYNAMIC(INVOKEDYNAMIC i) {
-        System.out.println(String.format(format,"D",i.getType(cp),i.getMethodName(cp),
-                argumentList(i.getArgumentTypes(cp))));
+        System.out.println(String.format(format,"D",i.getClassName(cp),i.getMethodName(cp)));
     }
 }
