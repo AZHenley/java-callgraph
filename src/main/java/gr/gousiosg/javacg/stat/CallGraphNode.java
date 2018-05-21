@@ -35,7 +35,8 @@ public class CallGraphNode {
 	}
 	
 	public void AddMethodThatCallsThis(String fCN, String mN) {
-		
+		if(!methodsThatCallThis.contains(fCN + "!!!" + mN)) // Only add if it doesn't exist already.
+			methodsThatCallThis.add(fCN + "!!!" + mN);
 	}
 
 }
