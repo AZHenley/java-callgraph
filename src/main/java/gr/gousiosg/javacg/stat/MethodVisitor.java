@@ -61,17 +61,6 @@ public class MethodVisitor extends EmptyVisitor {
         lineNumber = Integer.toString(mg.getLineNumbers()[0].getLineNumber().getLineNumber()); 
     }
 
-//    private String argumentList(Type[] arguments) {
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = 0; i < arguments.length; i++) {
-//            if (i != 0) {
-//                sb.append(",");
-//            }
-//            sb.append(arguments[i].toString());
-//        }
-//        return sb.toString();
-//    }
-
     public void start() {
         if (mg.isAbstract() || mg.isNative())
             return;
@@ -92,7 +81,6 @@ public class MethodVisitor extends EmptyVisitor {
     }
 
     public CallGraphNode processMethod(String fN, String fCN, String mN, String lN) {
-    	System.out.println(JCallGraph.allNodes.size());
     	return JCallGraph.addNode(fCN + "!!!" + mN, new CallGraphNode(fN, fCN, mN, lN));
     }
     

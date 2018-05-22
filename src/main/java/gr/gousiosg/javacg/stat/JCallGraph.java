@@ -62,9 +62,7 @@ public class JCallGraph {
 	
 	public static void calculateWhoCalledThis(CallGraphNode node) {
 		for(String called : node.methodsCalledFromThis) {
-			System.out.println("AZH" + called);
 			CallGraphNode otherNode = allNodes.get(called);
-			System.out.println("RAWR" + otherNode);
 			if(otherNode != null)
 				otherNode.AddMethodThatCallsThis(node.fullClassName, node.methodName);		
 		}
@@ -106,9 +104,9 @@ public class JCallGraph {
                 // Testing.
                 //CallGraphNode testNode = allNodes.get("gr.gousiosg.javacg.stat.MethodVisitor!!!start");
                 //System.out.println("AZH " + testNode);//+ testNode.methodsCalledFromThis.size() + " "); //+ testNode.methodsThatCallThis.size());
-                allNodes.forEach((key, value) -> System.out.println(key + " : " + value.methodsThatCallThis.size()));
-                System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsCalledFromThis.toString());
-                System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsThatCallThis.toString());
+                //allNodes.forEach((key, value) -> System.out.println(key + " : " + value.methodsThatCallThis.size()));
+                //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsCalledFromThis.toString());
+                //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsThatCallThis.toString());
                 
                 
                 
