@@ -123,23 +123,13 @@ public class JCallGraph {
                     ClassVisitor visitor = new ClassVisitor(cp.parse());
                     visitor.start();
                 }
-                
-                
+                     
                 for(Map.Entry<String, CallGraphNode> entry : allNodes.entrySet()) {
                 	calculateWhoCalledThis(entry.getValue());
                 }
-                
-                // Testing.
-                //CallGraphNode testNode = allNodes.get("gr.gousiosg.javacg.stat.MethodVisitor!!!start");
-                //System.out.println("AZH " + testNode);//+ testNode.methodsCalledFromThis.size() + " "); //+ testNode.methodsThatCallThis.size());
-                //allNodes.forEach((key, value) -> System.out.println(key + " : " + value.methodsThatCallThis.size()));
-                //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsCalledFromThis.toString());
-                //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsThatCallThis.toString());
-                
+                             
                 outputGraphFile();
-                
-                
-                
+               
                 jar.close();
             }
         } catch (IOException e) {
