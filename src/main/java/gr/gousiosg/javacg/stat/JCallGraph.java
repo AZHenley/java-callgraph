@@ -30,6 +30,8 @@ package gr.gousiosg.javacg.stat;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +67,32 @@ public class JCallGraph {
 			CallGraphNode otherNode = allNodes.get(called);
 			if(otherNode != null)
 				otherNode.AddMethodThatCallsThis(node.fullClassName, node.methodName);		
+		}
+	}
+	
+	public static void outputGraphFile() {
+		String output = "";
+		String line = "";
+		for(Map.Entry<String, CallGraphNode> entry : allNodes.entrySet()) {
+			CallGraphNode node = entry.getValue();
+			line = node.fileName + "&&&" + node.fullClassName + "&&&" + node.methodName + "&&&" + node.lineNumber + "&&&";
+			
+			for(String callee :  node.methodsThatCallThis) {
+				line = line + "$$$" + callee;
+			}
+			line = line + "&&&";
+			for(String caller :  node.methodsCalledFromThis) {
+				line = line + "$$$" + caller;
+			}
+			
+			output = output + System.lineSeparator() + line;
+		}
+		
+		try {
+			Files.write(Paths.get("./callgraph.zzz"), output.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -107,6 +135,8 @@ public class JCallGraph {
                 //allNodes.forEach((key, value) -> System.out.println(key + " : " + value.methodsThatCallThis.size()));
                 //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsCalledFromThis.toString());
                 //System.out.println(allNodes.get("gr.gousiosg.javacg.stat.ClassVisitor!!!visitJavaClass").methodsThatCallThis.toString());
+                
+                outputGraphFile();
                 
                 
                 
